@@ -1,25 +1,31 @@
 from pynput.keyboard import Controller
-import time
+from time import sleep
 
 
-# Autoclicker Functionality
-def AutoClick(inputClickKey, inputClickAmount, inputClickDelay):
-	keyboard = Controller();
+def auto_click(key: str, n_clicks: int, delay: float):
+	keyboard = Controller()
 
-	clickAmount = 1;
+	for _ in range(n_clicks):
+		keyboard.tap(key)
+		sleep(delay)
 
-	while clickAmount <= inputClickAmount:
-		clickAmount += 1;
 
-		keyboard.press(inputClickKey)
-		keyboard.release(inputClickKey)
+def main():
+	key = input("Key to be autopressed: ")
 
-		time.sleep(inputClickDelay)
+	try:
+		n_clicks = int(input("Number of autopresses (integer): "))
+	except ValueError:
+		print("\n The number of autopresses should be an integer value, defaulting to 1. \n")
+		n_clicks = 1
 
-# User Input
-KeyInput = input("Key to be autoclicked: ");
-ClickAmountInput = int(input("Number of autoclicks (integer): "))
-ClickDelayInput = int(input("Delay between each autoclick in seconds (integer): "))
+	try:
+		delay = float(input("Delay between each autopress in seconds (integer/float): "))
+	except ValueError:
+		print("\n The delay between each autoclick should be an integer or a decimal value, defaulting to 1 (second). \n")
+		delay = 1
 
-# Code Execution
-AutoClick(KeyInput, ClickAmountInput, ClickDelayInput);
+	auto_click(key, n_clicks, delay)
+
+if __name__ == '__main__':
+    main()
